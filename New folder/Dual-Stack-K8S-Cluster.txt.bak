@@ -1,0 +1,48 @@
+############ Create K8S Cluster With Dual Stack IP ####################################
+
+sudo sysctl -w net.ipv6.conf.all.forwarding=1
+
+kubeadm init --pod-network-cidr=172.16.3.0/24,2603:c021:4005:b204:0000:0000:0000:0000/64 --service-cidr=10.96.0.0/16,2001:db8:42:1::/112
+
+
+
+############ Install Calico networking and network policy for dual stack or IPv6 only ####################################
+custom-resources.yaml
+
+apiVersion: operator.tigera.io/v1
+kind: Installation
+metadata:
+  name: default
+spec:
+   # Configures Calico networking.
+  calicoNetwork:
+     # Note: The ipPools section cannot be modified post-install.
+    ipPools:
+      - blockSize: 26
+        cidr: 172.31.32.0/20
+        encapsulation: IPIP
+        natOutgoing: Enabled
+        nodeSelector: all()
+      - blockSize: 122
+        cidr: 2406:da1a:177:110::/56
+        encapsulation: None
+        natOutgoing: Enabled
+        nodeSelector: all()
+---
+
+# This section configures the Calico API server.
+# For more information, see: https://projectcalico.docs.tigera.io/master/reference/installation/api#operator.tigera.io/v1.APIServer
+apiVersion: operator.tigera.io/v1
+kind: APIServer
+metadata:
+  name: default
+spec: {}
+
+####################################################################
+
+
+
+
+
+
+
