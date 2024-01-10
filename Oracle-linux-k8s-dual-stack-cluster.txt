@@ -39,7 +39,7 @@ sudo systemctl restart kubelet
 ############ Only for Master-Node#########################################################################################
 kubeadm config images pull
 
-kubeadm init --pod-network-cidr=192.168.0.0/16,2603:c021:4004:7208:e7fe:58b5:c0ea:93db/64 --service-cidr=10.96.0.0/16,2001:db8:42:1::/112
+kubeadm init --pod-network-cidr=192.168.0.0/16,2603:c021:4005:b204:0000:0000:0000:0000/56 --service-cidr=10.96.0.0/16,2001:db8:42:1::/112
 
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
@@ -69,7 +69,7 @@ spec:
         natOutgoing: Enabled
         nodeSelector: all()
       - blockSize: 122
-        cidr: 2603:c021:4004:7208:e7fe:58b5:c0ea:93db/64
+        cidr: 2603:c021:4005:b204:0000:0000:0000:0000/56
         encapsulation: None
         natOutgoing: Enabled
         nodeSelector: all()
